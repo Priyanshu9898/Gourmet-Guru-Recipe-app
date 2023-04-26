@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import helmet from "helmet";
 
 import authRouter from "./routers/userRouter.js";
+import recipeRouter from "./routers/recipeRouter.js";
 
 import { connectDB } from "./config/Database.js";
 
@@ -35,6 +36,7 @@ app.use(morgan("dev"));
 
 // Routers
 app.use("/api/auth", authRouter);
+app.use("/api/v1", recipeRouter);
 
 const port = process.env.PORT || 8000;
 

@@ -6,7 +6,6 @@ export const loginController = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-
     if (!email || !password) {
       return res.status(400).json({
         success: false,
@@ -47,7 +46,6 @@ export const loginController = async (req, res, next) => {
   }
 };
 
-
 // Register Controller
 export const registerController = async (req, res, next) => {
   try {
@@ -83,7 +81,6 @@ export const registerController = async (req, res, next) => {
       message: "User Created Successfully",
       user: newUser,
     });
-
   } catch (err) {
     return res.status(400).json({
       success: false,
@@ -94,63 +91,70 @@ export const registerController = async (req, res, next) => {
 
 // Get User detail controller
 export const getUserController = async (req, res) => {
-    try{
+  try {
+    const userId = req.params.id;
 
-        const userId = req.params.id;
+    const user = await User.findById(userId);
 
-        const user = await User.findById(userId);
-
-        if(!user){
-            return res.status(409).json({
-                success: false,
-                message: "User does not exist",
-              });
-        }
-
-        return res.status(200).json({
-            success: true,
-            users: user,
-          });
-
-
+    if (!user) {
+      return res.status(409).json({
+        success: false,
+        message: "User does not exist",
+      });
     }
-    catch(err){
-        return res.status(400).json({
-            success: false,
-            message: err.message,
-          });
-    }
+
+    return res.status(200).json({
+      success: true,
+      users: user,
+    });
+  } catch (err) {
+    return res.status(400).json({
+      success: false,
+      message: err.message,
+    });
+  }
 };
 
 // Logout Controller
 export const logoutController = async (req, res) => {
-
-}
-
+  try {
+    res.status(200).cookie("token", null, {
+      expires: new Date(Date.now()),
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+  }).json({
+      success : true,
+      message: "You have been logged out Successfully",
+  })
+  } catch (err) {
+    return res.status(400).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
 
 // Get all users controller
 export const getAllUsers = async (req, res) => {
-    try{
-        const users = await User.find({});
+  try {
+    const users = await User.find({});
 
-        if(!users){
-            return res.status(409).json({
-                success: false,
-                message: "No User exists, create new user first",
-              });
-        }
-
-        return res.status(200).json({
-            success: true,
-            users: users,
-          });
-
-
+    if (!users) {
+      return res.status(409).json({
+        success: false,
+        message: "No User exists, create new user first",
+      });
     }
-    catch(err){
-        return res.status(400).json({
-            success: false,
-            message: err.message,
-          });
-    }
+
+    return res.status(200).json({
+      success: true,
+      users: users,
+    });
+  } catch (err) {
+    return res.status(400).json({
+      success: false,
+      message: err.message,
+    });
+  }
 };

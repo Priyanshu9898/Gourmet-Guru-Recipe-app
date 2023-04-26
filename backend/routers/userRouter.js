@@ -4,19 +4,19 @@ import { getAllUsers, loginController, registerController, logoutController } fr
 const router = express.Router();
 
 
-// Login routes
+// Login route
 router.route("/login").post(loginController);
 
-// Register routes
+// Register route
 router.route("/register").post(registerController);
 
-// Logout routes
+// Logout route
 router.route("/logout").get(logoutController);
 
-// Get All Users routes
+// Get All Users route
 router.route("/allUsers").get(getAllUsers);
 
-// Get User detail routes
+// Get User detail route
 router.route("/user/:id").get(getAllUsers);
 
 export default router;
